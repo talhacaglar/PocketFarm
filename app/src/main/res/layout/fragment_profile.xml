@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal" android:orientation="vertical" android:padding="24dp">
+        <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/iv_profile_photo" android:layout_width="100dp" android:layout_height="100dp" android:layout_marginTop="24dp" android:src="@drawable/ic_person" app:civ_border_color="@color/primary" app:civ_border_width="2dp" />
+        <TextView android:id="@+id/tv_full_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:textSize="22sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+        <TextView android:id="@+id/tv_email" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@color/text_secondary" />
+        <TextView android:id="@+id/tv_city" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textColor="@color/text_secondary" />
+        <com.google.android.material.chip.Chip android:id="@+id/tv_role" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:textColor="@color/text_on_primary" app:chipBackgroundColor="@color/primary" />
+
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_edit_profile" style="@style/SecondaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/edit_profile" app:icon="@drawable/ic_edit" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_my_products" style="@style/SecondaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/my_products" app:icon="@drawable/ic_product_placeholder" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_my_offers" style="@style/SecondaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/my_offers" app:icon="@drawable/ic_offer" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_messages" style="@style/SecondaryButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/nav_messages" app:icon="@drawable/ic_chat" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_logout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/logout" android:textColor="@color/error" app:backgroundTint="@color/surface" app:strokeColor="@color/error" app:strokeWidth="1dp" style="@style/SecondaryButton" />
+    </LinearLayout>
+</ScrollView>
