@@ -1,4 +1,4 @@
-# PocketFarm · Tarlam Cebimde
+# PocketFarm
 
 [English](#english) · [Türkçe](#türkçe)
 
