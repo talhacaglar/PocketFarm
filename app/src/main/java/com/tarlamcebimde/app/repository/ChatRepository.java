@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.tarlamcebimde.app.model.Chat;
 import com.tarlamcebimde.app.model.Message;
@@ -57,7 +58,7 @@ public class ChatRepository {
                 .get()
                 .continueWith(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        for (var doc : task.getResult().getDocuments()) {
+                        for (DocumentSnapshot doc : task.getResult().getDocuments()) {
                             Chat chat = doc.toObject(Chat.class);
                             if (chat != null && chat.getParticipants().contains(sellerId)) {
                                 return chat;
