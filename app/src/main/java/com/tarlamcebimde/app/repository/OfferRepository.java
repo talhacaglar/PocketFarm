@@ -37,7 +37,7 @@ public class OfferRepository {
                 .collection(Constants.COLLECTION_OFFERS)
                 .document(offerId)
                 .set(offer)
-                .continueWith(task -> offerId);
+                .onSuccessTask(result -> com.google.android.gms.tasks.Tasks.forResult(offerId));
     }
 
     /**

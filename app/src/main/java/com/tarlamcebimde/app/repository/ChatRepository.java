@@ -56,16 +56,14 @@ public class ChatRepository {
                 .whereArrayContains("participants", buyerId)
                 .whereEqualTo("productId", productId)
                 .get()
-                .continueWith(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                .onSuccessTask(snapshot -> {
+                        for (DocumentSnapshot doc : snapshot.getDocuments()) {
                             Chat chat = doc.toObject(Chat.class);
                             if (chat != null && chat.getParticipants().contains(sellerId)) {
-                                return chat;
+                                return com.google.android.gms.tasks.Tasks.forResult(chat);
                             }
                         }
-                    }
-                    return null;
+                    return com.google.android.gms.tasks.Tasks.forResult(null);
                 });
     }
 
@@ -77,8 +75,7 @@ public class ChatRepository {
                 chat.getParticipants().get(0),
                 chat.getParticipants().get(1),
                 chat.getProductId()
-        ).continueWithTask(task -> {
-            Chat existingChat = task.getResult();
+        ).onSuccessTask(existingChat -> {
             if (existingChat != null) {
                 return com.google.android.gms.tasks.Tasks.forResult(existingChat.getChatId());
             }
@@ -92,7 +89,7 @@ public class ChatRepository {
                     .collection(Constants.COLLECTION_CHATS)
                     .document(chatId)
                     .set(chat)
-                    .continueWith(t -> chatId);
+                    .onSuccessTask(result -> com.google.android.gms.tasks.Tasks.forResult(chatId));
         });
     }
 

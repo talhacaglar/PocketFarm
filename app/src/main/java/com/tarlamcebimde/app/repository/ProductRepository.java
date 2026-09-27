@@ -117,7 +117,7 @@ public class ProductRepository {
                 .collection(Constants.COLLECTION_PRODUCTS)
                 .document(productId)
                 .set(product)
-                .continueWith(task -> productId);
+                .onSuccessTask(result -> com.google.android.gms.tasks.Tasks.forResult(productId));
     }
 
     /**
