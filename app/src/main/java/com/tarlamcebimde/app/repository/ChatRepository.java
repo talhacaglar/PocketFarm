@@ -7,6 +7,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.firestore.Query;
 import com.tarlamcebimde.app.model.Chat;
 import com.tarlamcebimde.app.model.Message;
@@ -57,12 +59,12 @@ public class ChatRepository {
                 .whereEqualTo("productId", productId)
                 .get()
                 .onSuccessTask(snapshot -> {
-                        for (DocumentSnapshot doc : snapshot.getDocuments()) {
-                            Chat chat = doc.toObject(Chat.class);
-                            if (chat != null && chat.getParticipants().contains(sellerId)) {
-                                return com.google.android.gms.tasks.Tasks.forResult(chat);
-                            }
+                    for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                        Chat chat = doc.toObject(Chat.class);
+                        if (chat != null && chat.getParticipants().contains(sellerId)) {
+                            return com.google.android.gms.tasks.Tasks.forResult(chat);
                         }
+                    }
                     return com.google.android.gms.tasks.Tasks.forResult(null);
                 });
     }
@@ -97,13 +99,12 @@ public class ChatRepository {
      * Mesaj gönder
      */
     public Task<Void> sendMessage(String chatId, Message message) {
-        // Mesajı ekle
-        Task<Void> addMessage = firebase.getDb()
+        // Commit the message and its chat preview together.
+        DocumentReference chatRef = firebase.getDb()
                 .collection(Constants.COLLECTION_CHATS)
-                .document(chatId)
-                .collection(Constants.COLLECTION_MESSAGES)
-                .document()
-                .set(message);
+                .document(chatId);
+        WriteBatch batch = firebase.getDb().batch();
+        batch.set(chatRef.collection(Constants.COLLECTION_MESSAGES).document(), message);
 
         // Chat'in son mesajını güncelle
         Map<String, Object> chatUpdate = new HashMap<>();
@@ -111,12 +112,8 @@ public class ChatRepository {
         chatUpdate.put("lastSenderId", message.getSenderId());
         chatUpdate.put("lastMessageTime", FieldValue.serverTimestamp());
 
-        Task<Void> updateChat = firebase.getDb()
-                .collection(Constants.COLLECTION_CHATS)
-                .document(chatId)
-                .update(chatUpdate);
-
-        return com.google.android.gms.tasks.Tasks.whenAll(addMessage, updateChat);
+        batch.update(chatRef, chatUpdate);
+        return batch.commit();
     }
 
     /**
