@@ -97,9 +97,7 @@ public class ProductRepository {
                         productData.setValue(null);
                         return;
                     }
-                    if (snapshot.exists()) {
-                        productData.setValue(snapshot.toObject(Product.class));
-                    }
+                    productData.setValue(snapshot.exists() ? snapshot.toObject(Product.class) : null);
                 });
         return productData;
     }
